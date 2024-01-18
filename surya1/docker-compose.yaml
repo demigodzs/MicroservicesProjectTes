@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  db:
+    ports:
+      - 5432:5432
+    container_name: postgresql_container
+    image: postgres
+    environment:
+      - POSTGRES_DB=tes1
+      - POSTGRES_PASSWORD=123qwe
+      - POSTGRES_USER=postgres
+    volumes:
+      - C:\postgres_container_data:/var/lib/postgresql/data
+    restart: always
+  backend:
+    build: .
+    container_name: surya1_container
+    ports:
+      - 9090:9090
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tes1
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123qwe
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - db
+    restart: always
+
