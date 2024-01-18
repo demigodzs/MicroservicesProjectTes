@@ -30,19 +30,26 @@ public class EmailUsecase {
 
         PersonResponse person = personService.getPersonById(requestId, userId);
 
-        try {
-            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-            mimeMessageHelper.setFrom(fromEmail);
-            mimeMessageHelper.setTo(person.getData().getEmail());
-            mimeMessageHelper.setSubject("testing");
-            mimeMessageHelper.setText("for testing only");
+        if(person.getData().getEmail() != null || !person.getData().getEmail().equals(""))
+        {
+            try {
+                MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+                mimeMessageHelper.setFrom(fromEmail);
+                mimeMessageHelper.setTo(person.getData().getEmail());
+                mimeMessageHelper.setSubject("testing");
+                mimeMessageHelper.setText("for testing only");
 
-            javaMailSender.send(mimeMessage);
+                javaMailSender.send(mimeMessage);
 
-            responseInfo.setSuccess();
-        }catch(Exception e) {
-            responseInfo.setException(e);
+                responseInfo.setSuccess();
+            }catch(Exception e) {
+                responseInfo.setException(e);
+            }
+        }
+        else
+        {
+            responseInfo.setNotFoundException("Email not sent, person is null");
         }
 
         return responseInfo;

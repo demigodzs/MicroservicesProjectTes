@@ -40,7 +40,6 @@ public class PersonService {
 
                 System.out.println("PersonResponse: " + personResponse.toString());
             } else {
-                // Print the error message if the response is not successful
                 System.out.println("Error: " + response.code() + " - " + response.message());
             }
 
